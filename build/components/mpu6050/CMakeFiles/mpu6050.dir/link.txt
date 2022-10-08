@@ -1,0 +1,2 @@
+/usr/bin/arm-linux-gnueabihf-ar qc libmpu6050.a CMakeFiles/mpu6050.dir/mpu6050.c.o
+/usr/bin/arm-linux-gnueabihf-ranlib libmpu6050.a

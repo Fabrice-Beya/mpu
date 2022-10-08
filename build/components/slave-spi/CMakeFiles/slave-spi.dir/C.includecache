@@ -1,0 +1,42 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+../components/utils/utils.h
+stdio.h
+-
+stdlib.h
+-
+string.h
+-
+stdint.h
+-
+errno.h
+-
+
+/home/photon/projects/mpu/components/slave-spi/slave-spi.c
+slave-spi.h
+/home/photon/projects/mpu/components/slave-spi/slave-spi.h
+
+/home/photon/projects/mpu/components/slave-spi/slave-spi.h
+utils.h
+/home/photon/projects/mpu/components/slave-spi/utils.h
+fcntl.h
+-
+unistd.h
+-
+sys/ioctl.h
+-
+sys/stat.h
+-
+linux/ioctl.h
+-
+linux/types.h
+-
+linux/spi/spidev.h
+-
+

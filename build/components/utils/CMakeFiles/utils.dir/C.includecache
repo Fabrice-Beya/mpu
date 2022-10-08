@@ -1,0 +1,24 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/photon/projects/mpu/components/utils/utils.c
+utils.h
+/home/photon/projects/mpu/components/utils/utils.h
+
+/home/photon/projects/mpu/components/utils/utils.h
+stdio.h
+-
+stdlib.h
+-
+string.h
+-
+stdint.h
+-
+errno.h
+-
+

@@ -1,0 +1,2 @@
+/usr/bin/arm-linux-gnueabihf-ar qc libslave-spi.a CMakeFiles/slave-spi.dir/slave-spi.c.o
+/usr/bin/arm-linux-gnueabihf-ranlib libslave-spi.a

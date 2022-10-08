@@ -1,0 +1,27 @@
+[
+{
+  "directory": "/home/photon/projects/mpu/build",
+  "command": "/usr/bin/arm-linux-gnueabihf-gcc  -I/home/photon/projects/mpu/./main -I/home/photon/projects/mpu/./components/utils -I/home/photon/projects/mpu/./components/slave-spi -I/home/photon/projects/mpu/./components/mpu6050 -I/home/photon/projects/mpu/./components/main-controller -g -pthread -o CMakeFiles/main.dir/main/main.c.o -c /home/photon/projects/mpu/main/main.c",
+  "file": "/home/photon/projects/mpu/main/main.c"
+},
+{
+  "directory": "/home/photon/projects/mpu/build/components/slave-spi",
+  "command": "/usr/bin/arm-linux-gnueabihf-gcc  -I/home/photon/projects/mpu/components/slave-spi/../utils -g -o CMakeFiles/slave-spi.dir/slave-spi.c.o -c /home/photon/projects/mpu/components/slave-spi/slave-spi.c",
+  "file": "/home/photon/projects/mpu/components/slave-spi/slave-spi.c"
+},
+{
+  "directory": "/home/photon/projects/mpu/build/components/mpu6050",
+  "command": "/usr/bin/arm-linux-gnueabihf-gcc  -I/home/photon/projects/mpu/components/mpu6050/../utils -g -o CMakeFiles/mpu6050.dir/mpu6050.c.o -c /home/photon/projects/mpu/components/mpu6050/mpu6050.c",
+  "file": "/home/photon/projects/mpu/components/mpu6050/mpu6050.c"
+},
+{
+  "directory": "/home/photon/projects/mpu/build/components/main-controller",
+  "command": "/usr/bin/arm-linux-gnueabihf-gcc  -I/home/photon/projects/mpu/components/main-controller/../slave-spi -I/home/photon/projects/mpu/components/main-controller/../utils -g -o CMakeFiles/main-controller.dir/main-controller.c.o -c /home/photon/projects/mpu/components/main-controller/main-controller.c",
+  "file": "/home/photon/projects/mpu/components/main-controller/main-controller.c"
+},
+{
+  "directory": "/home/photon/projects/mpu/build/components/utils",
+  "command": "/usr/bin/arm-linux-gnueabihf-gcc   -g -o CMakeFiles/utils.dir/utils.c.o -c /home/photon/projects/mpu/components/utils/utils.c",
+  "file": "/home/photon/projects/mpu/components/utils/utils.c"
+}
+]

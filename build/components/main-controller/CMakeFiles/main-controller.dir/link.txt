@@ -1,0 +1,2 @@
+/usr/bin/arm-linux-gnueabihf-ar qc libmain-controller.a CMakeFiles/main-controller.dir/main-controller.c.o
+/usr/bin/arm-linux-gnueabihf-ranlib libmain-controller.a
