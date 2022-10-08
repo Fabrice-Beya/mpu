@@ -73,14 +73,14 @@ stdint.h
 -
 errno.h
 -
+pthread.h
+-
 
 /home/photon/projects/mpu/main/main.c
 main.h
 /home/photon/projects/mpu/main/main.h
 
 /home/photon/projects/mpu/main/main.h
-pthread.h
--
 utils.h
 /home/photon/projects/mpu/main/utils.h
 main-controller.h

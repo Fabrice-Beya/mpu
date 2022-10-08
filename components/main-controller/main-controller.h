@@ -30,7 +30,7 @@
 #define BITS_PER_WORD       8
 #define BUF_LEN             4
 
-int MainController(void);
+int MainController(spi_slave_config_t *_spi_slave_config);
 void MainController_Run(void);
 
 #endif

@@ -17,6 +17,8 @@ stdint.h
 -
 errno.h
 -
+pthread.h
+-
 
 /home/photon/projects/mpu/components/slave-spi/slave-spi.c
 slave-spi.h

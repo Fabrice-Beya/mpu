@@ -17,6 +17,8 @@ stdint.h
 -
 errno.h
 -
+pthread.h
+-
 
 /home/photon/projects/mpu/components/mpu6050/mpu6050.c
 mpu6050.h

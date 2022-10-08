@@ -5,7 +5,7 @@ void *Thread_Main_Controller(void *vargp) {
   tid = (long)vargp;
   int ret = -1;
 
-  ret = MainController();
+  ret = MainController(&spi_slave_config);
   if (ret) {
     printf("Failed to initialize main controller.");
     pthread_exit(NULL);
@@ -43,7 +43,7 @@ void *Thread_SLAVE_SPI(void *vargp) {
   tid = (long)vargp;
   int ret = -1;
 
-  ret = SlaveSpi();
+  ret = SlaveSpi(&spi_slave_config);
   if (ret) {
     printf("Failed to initialize Slave SPI\n");
     pthread_exit(NULL);
@@ -56,7 +56,7 @@ void *Thread_SLAVE_SPI(void *vargp) {
   pthread_exit(NULL);
 }
 
-void create_threads(void) {
+int setup_threads(void) {
   pthread_t vThread_MPU6050, vThread_SLAVE_SPI, vMain_Controller;
 
   int ret = -1;
@@ -82,10 +82,35 @@ void create_threads(void) {
   pthread_join(vMain_Controller, NULL);
   pthread_join(vThread_MPU6050, NULL);
   pthread_join(vThread_SLAVE_SPI, NULL);
+
+  return ret;
+}
+
+int setup_mutexes() {
+  spi_slave_config.spi_slave_message        = &spi_slave_message;
+  spi_slave_config.spi_slave_response       = &spi_slave_response;
+  spi_slave_config.spi_slave_message_lock   = &spi_slave_message_lock;
+  spi_slave_config.spi_slave_response_lock  = &spi_slave_response_lock;
+
+  if (pthread_mutex_init(&spi_slave_message_lock, NULL) != 0) {
+      printf("\n Failed to init spi message mutex\n");
+      return 1;
+  }
+
+  if (pthread_mutex_init(&spi_slave_response_lock, NULL) != 0) {
+      printf("\n Failed to init spi response mutex\n");
+      return 1;
+  }
 }
 
 int main(void) {
-  create_threads();
+  if(setup_threads()) {
+    printf("\n Failed to init all threads.\n");
+  }
+
+  if(setup_mutexes()) {
+    printf("\n Failed to init all mutexes.\n");
+  }
 
   exit(EXIT_SUCCESS);
   return 0;

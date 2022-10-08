@@ -15,6 +15,7 @@
 
 uint8_t response[BUF_LEN];
 uint8_t message[BUF_LEN];
+spi_slave_config_t *sl_spi_slave_config;
 
 struct spi_ioc_transfer t;
 int spi_device;				//file descriptor for the SPI0 device
@@ -26,12 +27,7 @@ static void init_buffers(void) {
     t.delay_usecs = 0;
     t.speed_hz = SPI_SPEED;
     t.bits_per_word = BITS_PER_WORD;
-    t.cs_change = 1;
-
-    response[COMMAND]   = IDLE;
-    response[DIRECTION] = 0;
-    response[SPEED]     = 0;
-    response[DURATION]  = 0;   
+    t.cs_change = 1;   
 }
 
 static void printBuffer(const uint8_t *buf) {
@@ -39,7 +35,7 @@ static void printBuffer(const uint8_t *buf) {
   printf("COMMAND: %d\n", buf[COMMAND]);
   printf("DIRECTION: %d\n", buf[DIRECTION]);
   printf("SPEED: %d\n", buf[SPEED]);
-  printf("DURATION: %d\n", buf[DURATION]);
+  printf("RUNETIME: %d\n", buf[RUNETIME]);
   printf("\n");
 }
 
@@ -87,7 +83,6 @@ int spi_open_port (void)
         exit(EXIT_FAILURE);
     }
 
-
   return(status_value);
 }
 
@@ -122,43 +117,57 @@ static int spi_write_read(void)
 	return retVal;
 }
 
-int SlaveSpi(void) {
-  init_buffers();
-  spi_open_port();
+int SlaveSpi(spi_slave_config_t *sl_spi_slave_config) {
+  sl_spi_slave_config = sl_spi_slave_config;
+  int ret = -1;
+  ret = spi_open_port();
 
-  return 0;
+  return ret;
 }
 
-static void set_message(uint8_t command, uint8_t direction, uint8_t speed, uint8_t duration) {
+static void set_message(uint8_t command, uint8_t direction, uint8_t speed, uint8_t runetime) {
   message[COMMAND] = command;
   message[DIRECTION] = direction;
   message[SPEED] = speed;
-  message[DURATION] = duration;
+  message[RUNETIME] = RUNETIME;
 }
 
 static void read_response(void) {
-  printf("Reading response: ");
-  set_message(IDLE, response[DIRECTION], response[SPEED], response[DURATION]);
+  while (pthread_mutex_lock(&(*(sl_spi_slave_config)->spi_slave_response_lock)) != 0) {
+    printf("\n Waiting for spi slave response lock\n");
+  }
+
+  printf("Reading spi response: ");
+  set_message(IDLE, 0, 0, 0);
   spi_write_read();
+
+  sl_spi_slave_config->spi_slave_response->command = response[COMMAND];
+  sl_spi_slave_config->spi_slave_response->direction = response[DIRECTION];
+  sl_spi_slave_config->spi_slave_response->speed = response[SPEED];
+  sl_spi_slave_config->spi_slave_response->runetime = response[RUNETIME];
+
+  pthread_mutex_unlock(&(*(sl_spi_slave_config)->spi_slave_message_lock));
+
   printBuffer(response);
 }
 
-static void send_command(uint8_t command, uint8_t direction, uint8_t speed, uint8_t duration) {
-  printf("Sending command: ");
-  set_message(command, direction, speed, duration);
-  printBuffer(message);
+static void send_command(void) {
+  while (pthread_mutex_lock(&(*(sl_spi_slave_config)->spi_slave_message_lock)) != 0) {
+    printf("\n Waiting for spi slave message lock\n");
+  }
+
+  printf("Sending spi command: ");
+  set_message(sl_spi_slave_config->spi_slave_message->command, 
+              sl_spi_slave_config->spi_slave_message->direction, 
+              sl_spi_slave_config->spi_slave_message->speed, 
+              sl_spi_slave_config->spi_slave_message->runetime);
+  // printBuffer(message);
   spi_write_read();
-  // spi_write_read();
 }
 
 void SlaveSpi_Run(void) {
-
-  uint8_t spd;
-
   while(1) {
-    printf("Enter movement speed command:");
-    scanf("%d", &spd);
-    send_command(MOVE, FORWARD, spd, 2);
+    send_command();
     read_response();
   }
 }
