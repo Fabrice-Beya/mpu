@@ -10,6 +10,6 @@ spi_slave_message_t spi_slave_message;
 spi_slave_message_t spi_slave_response;
 pthread_mutex_t spi_slave_message_lock;
 pthread_mutex_t spi_slave_response_lock;
-spi_slave_config_t spi_slave_config;
+spi_slave_bus_t spi_slave_config;
 
 #endif

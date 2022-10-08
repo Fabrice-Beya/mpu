@@ -29,7 +29,9 @@
 #define BITS_PER_WORD       8
 #define BUF_LEN             4
 
-int SlaveSpi(spi_slave_config_t *spi_slave_config);
+int SlaveSpi(void);
 void SlaveSpi_Run(void);
+int SendSpiMessage(spi_slave_message_t *spi_slave_message);
+int ReadSpiResponse(spi_slave_message_t *spi_slave_response);
 
 #endif

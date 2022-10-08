@@ -15,7 +15,6 @@
 
 uint8_t response[BUF_LEN];
 uint8_t message[BUF_LEN];
-spi_slave_config_t *sl_spi_slave_config;
 
 struct spi_ioc_transfer t;
 int spi_device;				//file descriptor for the SPI0 device
@@ -117,8 +116,7 @@ static int spi_write_read(void)
 	return retVal;
 }
 
-int SlaveSpi(spi_slave_config_t *sl_spi_slave_config) {
-  sl_spi_slave_config = sl_spi_slave_config;
+int SlaveSpi(void) {
   int ret = -1;
   ret = spi_open_port();
 
@@ -132,42 +130,40 @@ static void set_message(uint8_t command, uint8_t direction, uint8_t speed, uint8
   message[RUNETIME] = RUNETIME;
 }
 
-static void read_response(void) {
-  while (pthread_mutex_lock(&(*(sl_spi_slave_config)->spi_slave_response_lock)) != 0) {
-    printf("\n Waiting for spi slave response lock\n");
-  }
-
+int ReadSpiResponse(spi_slave_message_t *spi_slave_response) {
+  int ret = -1;
   printf("Reading spi response: ");
   set_message(IDLE, 0, 0, 0);
-  spi_write_read();
+  ret = spi_write_read();
 
-  sl_spi_slave_config->spi_slave_response->command = response[COMMAND];
-  sl_spi_slave_config->spi_slave_response->direction = response[DIRECTION];
-  sl_spi_slave_config->spi_slave_response->speed = response[SPEED];
-  sl_spi_slave_config->spi_slave_response->runetime = response[RUNETIME];
+  spi_slave_response->command = response[COMMAND];
+  spi_slave_response->direction = response[DIRECTION];
+  spi_slave_response->speed = response[SPEED];
+  spi_slave_response->runetime = response[RUNETIME];
 
-  pthread_mutex_unlock(&(*(sl_spi_slave_config)->spi_slave_message_lock));
+  // printBuffer(response);
 
-  printBuffer(response);
+  return ret;
 }
 
-static void send_command(void) {
-  while (pthread_mutex_lock(&(*(sl_spi_slave_config)->spi_slave_message_lock)) != 0) {
-    printf("\n Waiting for spi slave message lock\n");
-  }
+int SendSpiMessage(spi_slave_message_t *spi_slave_message) {
+  int ret = -1;
 
   printf("Sending spi command: ");
-  set_message(sl_spi_slave_config->spi_slave_message->command, 
-              sl_spi_slave_config->spi_slave_message->direction, 
-              sl_spi_slave_config->spi_slave_message->speed, 
-              sl_spi_slave_config->spi_slave_message->runetime);
+  set_message(spi_slave_message->command, 
+              spi_slave_message->direction, 
+              spi_slave_message->speed, 
+              spi_slave_message->runetime);
   // printBuffer(message);
-  spi_write_read();
+
+  ret = spi_write_read();
+
+  return ret;
 }
 
 void SlaveSpi_Run(void) {
   while(1) {
-    send_command();
-    read_response();
+    // send_command();
+    // read_response();
   }
 }
