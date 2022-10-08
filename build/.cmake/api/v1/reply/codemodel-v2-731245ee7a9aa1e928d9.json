@@ -1,0 +1,158 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"childIndexes" : 
+					[
+						1,
+						2,
+						3,
+						4
+					],
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.0.0"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0
+					]
+				},
+				{
+					"build" : "components/slave-spi",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.0.0"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 0,
+					"source" : "components/slave-spi",
+					"targetIndexes" : 
+					[
+						3
+					]
+				},
+				{
+					"build" : "components/mpu6050",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.0.0"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 0,
+					"source" : "components/mpu6050",
+					"targetIndexes" : 
+					[
+						2
+					]
+				},
+				{
+					"build" : "components/main-controller",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.0.0"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 0,
+					"source" : "components/main-controller",
+					"targetIndexes" : 
+					[
+						1
+					]
+				},
+				{
+					"build" : "components/utils",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.0.0"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 0,
+					"source" : "components/utils",
+					"targetIndexes" : 
+					[
+						4
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4
+					],
+					"name" : "main",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "main::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-main-Debug-b94905c460c041b9d332.json",
+					"name" : "main",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 3,
+					"id" : "main-controller::@0fb2a637ef0d23787206",
+					"jsonFile" : "target-main-controller-Debug-f81040650a32c2af0f84.json",
+					"name" : "main-controller",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 2,
+					"id" : "mpu6050::@e02be027333ccdfb7868",
+					"jsonFile" : "target-mpu6050-Debug-7910e621f7e2802b7fc5.json",
+					"name" : "mpu6050",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "slave-spi::@02279fd460d5144bc76d",
+					"jsonFile" : "target-slave-spi-Debug-1d186a835fabdc36cddd.json",
+					"name" : "slave-spi",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 4,
+					"id" : "utils::@4c0087b3ae73017231a5",
+					"jsonFile" : "target-utils-Debug-35196001034ccd6de66c.json",
+					"name" : "utils",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "/home/photon/projects/mpu/build",
+		"source" : "/home/photon/projects/mpu"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 1
+	}
+}
