@@ -10,12 +10,16 @@ find_package(Threads REQUIRED)
 
 add_subdirectory(components/slave-spi)
 add_subdirectory(components/mpu6050)
+add_subdirectory(components/main-controller)
+add_subdirectory(components/utils)
 
 include_directories(./main)
+include_directories(./components/utils)
 include_directories(./components/slave-spi)
 include_directories(./components/mpu6050)
+include_directories(./components/main-controller)
 
 add_executable(${PROJECT_NAME} main/main.c)
 
 
-target_link_libraries(main mpu6050 slave-spi Threads::Threads)
+target_link_libraries(main utils main-controller mpu6050 slave-spi Threads::Threads)

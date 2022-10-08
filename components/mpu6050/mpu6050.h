@@ -14,11 +14,7 @@
 #ifndef _MPU6050_H_
 #define _MPU6050_H_
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <stdint.h>
-#include <errno.h>
+#include "utils.h"
 #include <fcntl.h>
 #include <unistd.h>
 #include <sys/ioctl.h>
@@ -52,7 +48,7 @@ typedef struct {
     float temp;
 } imu_type;
 
-int MPU6050Init(void);
+int MPU6050(void);
 void ReadIMU(imu_type *imu_data);
 void PrintImuData(imu_type *imu_data);
 void MPU6050_Run(imu_type *imu_data);

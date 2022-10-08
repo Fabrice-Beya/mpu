@@ -158,12 +158,14 @@ void ReadIMU(imu_type *imu_data) {
     read_temp(imu_data);
 }
 
-int MPU6050Init(void) {
+int MPU6050(void) {
     printf("Initializing mpu60503333....\n");
     i2c_init();
     reset();
     test_connnection();
     read_accel_range();
+
+    return 0;
 }
 
 void MPU6050_Run(imu_type *imu_data) {

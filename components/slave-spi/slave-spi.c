@@ -43,7 +43,7 @@ static void printBuffer(const uint8_t *buf) {
   printf("\n");
 }
 
-int SpiOpenPort (void)
+int spi_open_port (void)
 {
 	int status_value = -1;
   uint32_t temp;
@@ -91,7 +91,7 @@ int SpiOpenPort (void)
   return(status_value);
 }
 
-int SpiClosePort (void)
+static int spi_close_port (void)
 {
 	int status_value = -1;
   
@@ -104,7 +104,7 @@ int SpiClosePort (void)
   return(status_value);
 }
 
-int SpiWriteAndRead(void)
+static int spi_write_read(void)
 {
 	int retVal = -1;
 
@@ -122,11 +122,11 @@ int SpiWriteAndRead(void)
 	return retVal;
 }
 
-int SlaveSpiInit(void) {
-    init_buffers();
-    SpiOpenPort();
+int SlaveSpi(void) {
+  init_buffers();
+  spi_open_port();
 
-    return 0;
+  return 0;
 }
 
 static void set_message(uint8_t command, uint8_t direction, uint8_t speed, uint8_t duration) {
@@ -139,7 +139,7 @@ static void set_message(uint8_t command, uint8_t direction, uint8_t speed, uint8
 static void read_response(void) {
   printf("Reading response: ");
   set_message(IDLE, response[DIRECTION], response[SPEED], response[DURATION]);
-  SpiWriteAndRead();
+  spi_write_read();
   printBuffer(response);
 }
 
@@ -147,11 +147,11 @@ static void send_command(uint8_t command, uint8_t direction, uint8_t speed, uint
   printf("Sending command: ");
   set_message(command, direction, speed, duration);
   printBuffer(message);
-  SpiWriteAndRead();
-  // SpiWriteAndRead();
+  spi_write_read();
+  // spi_write_read();
 }
 
-void Monitor(void) {
+void SlaveSpi_Run(void) {
 
   uint8_t spd;
 
@@ -160,6 +160,5 @@ void Monitor(void) {
     scanf("%d", &spd);
     send_command(MOVE, FORWARD, spd, 2);
     read_response();
-
   }
 }
