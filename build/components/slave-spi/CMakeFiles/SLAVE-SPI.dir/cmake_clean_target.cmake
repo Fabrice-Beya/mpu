@@ -1,3 +1,0 @@
-file(REMOVE_RECURSE
-  "libSLAVE-SPI.a"
-)
