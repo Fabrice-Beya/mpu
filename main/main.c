@@ -73,11 +73,11 @@ int setup_threads(void) {
   //   printf("Error - Unable to create mpu6050 thread");
   // }
 
-  ret = pthread_create(&vThread_SLAVE_SPI, NULL, Thread_SLAVE_SPI, &vThread_SLAVE_SPI); 
+  // ret = pthread_create(&vThread_SLAVE_SPI, NULL, Thread_SLAVE_SPI, &vThread_SLAVE_SPI); 
 
-  if (ret) {
-    printf("Error - Unable to create slave spi thread");
-  } 
+  // if (ret) {
+  //   printf("Error - Unable to create slave spi thread");
+  // } 
 
   pthread_join(vMain_Controller, NULL);
   // pthread_join(vThread_MPU6050, NULL);

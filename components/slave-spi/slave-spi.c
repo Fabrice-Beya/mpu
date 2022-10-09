@@ -118,6 +118,7 @@ static int spi_write_read(void)
 
 int SlaveSpi(void) {
   int ret = -1;
+  init_buffers();
   ret = spi_open_port();
 
   return ret;
@@ -127,7 +128,7 @@ static void set_message(uint8_t command, uint8_t direction, uint8_t speed, uint8
   message[COMMAND] = command;
   message[DIRECTION] = direction;
   message[SPEED] = speed;
-  message[RUNETIME] = RUNETIME;
+  message[RUNETIME] = runetime;
 }
 
 int ReadSpiResponse(spi_slave_message_t *spi_slave_response) {
@@ -142,6 +143,7 @@ int ReadSpiResponse(spi_slave_message_t *spi_slave_response) {
   spi_slave_response->runetime = response[RUNETIME];
 
   // printBuffer(response);
+
 
   return ret;
 }

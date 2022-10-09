@@ -23,14 +23,18 @@
 #include <pthread.h>
 
 // Commands
-#define MOVE                0x20
-#define SLEEP               0x21
-#define REBOOT              0x22
-#define STATUS              0x23
-#define IDLE                0x24
+#define MOVE                1
+#define SLEEP               2
+#define REBOOT              3
+#define STATUS              4
+#define IDLE                5
 
 #define FORWARD             1
-#define BACKWARD            0
+#define BACKWARD            2
+#define FORWARD_LEFT        3
+#define FORWARD_RIGHT       4
+#define BACKWARD_LEFT       5
+#define BACKWARD_RIGHT      6
 
 /**
  * @brief 

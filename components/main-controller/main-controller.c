@@ -42,8 +42,15 @@ static void init_spi_config(spi_slave_bus_t *spi_slave_bus_t) {
 }
 
 int MainController(spi_slave_bus_t *spi_slave_bus_t) {
+  int ret = -1;
   init_spi_config(spi_slave_bus_t);
-  return 0;
+  ret = SlaveSpi();
+  if (ret) {
+    printf("Failed to initialize Slave SPI\n");
+    pthread_exit(NULL);
+  } 
+
+  return ret;
 }
 
 static void print_spi_slave_message(const spi_slave_message_t *message) {
@@ -56,20 +63,18 @@ static void print_spi_slave_message(const spi_slave_message_t *message) {
 }
 
 static int process_slave_response(void) {
-  print_spi_slave_message(mc_spi_slave_bus->spi_slave_message);
+  print_spi_slave_message(mc_spi_slave_bus->spi_slave_response);
   return 0;
 }
 
 static int read_response(void) {
   int ret = -1;
   printf("Reading response: ");
-  while (pthread_mutex_trylock(mc_spi_slave_bus->spi_slave_response_lock) != 0)
-  {
-    printf("\n Waiting for spi slave response lock\n");
-  }
+  
+  pthread_mutex_trylock(mc_spi_slave_bus->spi_slave_response_lock);
 
   ret = ReadSpiResponse(mc_spi_slave_bus->spi_slave_response);
-  if(ret) {
+  if(ret < 0) {
     printf("\n Failed to read spi response.\n");
   }
 
@@ -84,35 +89,42 @@ static int send_command(uint8_t command, uint8_t direction, uint8_t speed, uint8
   int ret = -1;
   printf("Sending command: ");
 
-  while (pthread_mutex_trylock(mc_spi_slave_bus->spi_slave_message_lock) != 0)
-  {
-    // printf("\n Waiting for spi slave message lock\n");
-  }
+  pthread_mutex_lock(mc_spi_slave_bus->spi_slave_message_lock);
 
-  mc_spi_slave_bus->spi_slave_message->command = command;
-  mc_spi_slave_bus->spi_slave_message->direction = direction;
-  mc_spi_slave_bus->spi_slave_message->speed = speed;
-  mc_spi_slave_bus->spi_slave_message->runetime = runetime;
+  spi_slave_message_t spi_slave_message;
 
-  ret = SendSpiMessage(mc_spi_slave_bus->spi_slave_message);
-  if(ret) {
+  spi_slave_message.command = command;
+  spi_slave_message.direction = direction;
+  spi_slave_message.speed = speed;
+  spi_slave_message.runetime = runetime;
+
+  ret = SendSpiMessage(&spi_slave_message);
+  if(ret < 0) {
     printf("\n Failed to send spi message.\n");
   }
 
   pthread_mutex_unlock(mc_spi_slave_bus->spi_slave_message_lock);
-  print_spi_slave_message(mc_spi_slave_bus->spi_slave_message);
+  print_spi_slave_message(&spi_slave_message);
 
   return ret;
 }
 
 void MainController_Run(void) {
 
-  uint8_t spd;
+  int direction, speed, runetime;
 
   while(1) {
-    printf("Enter movement speed command:");
-    scanf("%d", &spd);
-    send_command(MOVE, FORWARD, spd, 2);
+    printf("\nEnter direction code command: 1-Forward 2-Backward 3-Foward-Left 4-Forward-Right 5-Backward-Left 6-Backward_right: ");
+    scanf("%u", &direction);
+    printf("\nEnter speed in range of: 0 - 100: ");
+    scanf("%u", &speed);
+    printf("\nEnter rune time in seconds: ");
+    scanf("%u", &runetime);
+
+    printf("values read: direction - %u speed - %u runetime %u", direction, speed, runetime);
+
+    send_command(MOVE, (uint8_t)direction, (uint8_t)speed, (uint8_t)runetime);
+    sleep(0.5);
     read_response();
   }
 }
