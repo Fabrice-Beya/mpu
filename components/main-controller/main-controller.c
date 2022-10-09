@@ -109,22 +109,26 @@ static int send_command(uint8_t command, uint8_t direction, uint8_t speed, uint8
   return ret;
 }
 
-void MainController_Run(void) {
-
+static void cli_interface(void) {
   int direction, speed, runetime;
 
+  printf("\nEnter direction code command: 1-Forward 2-Backward 3-Foward-Left 4-Forward-Right 5-Backward-Left 6-Backward_right: ");
+  scanf("%u", &direction);
+  printf("\nEnter speed in range of: 0 - 100: ");
+  scanf("%u", &speed);
+  printf("\nEnter rune time in seconds: ");
+  scanf("%u", &runetime);
+
+  printf("values read: direction - %u speed - %u runetime %u", direction, speed, runetime);
+
+  send_command(MOVE, (uint8_t)direction, (uint8_t)speed, (uint8_t)runetime);
+  sleep(0.5);
+  read_response();
+
+}
+
+void MainController_Run(void) {
   while(1) {
-    printf("\nEnter direction code command: 1-Forward 2-Backward 3-Foward-Left 4-Forward-Right 5-Backward-Left 6-Backward_right: ");
-    scanf("%u", &direction);
-    printf("\nEnter speed in range of: 0 - 100: ");
-    scanf("%u", &speed);
-    printf("\nEnter rune time in seconds: ");
-    scanf("%u", &runetime);
-
-    printf("values read: direction - %u speed - %u runetime %u", direction, speed, runetime);
-
-    send_command(MOVE, (uint8_t)direction, (uint8_t)speed, (uint8_t)runetime);
-    sleep(0.5);
-    read_response();
+    cli_interface();
   }
 }
