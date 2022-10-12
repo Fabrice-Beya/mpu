@@ -76,17 +76,17 @@ int setup_threads(void) {
 
   int ret = -1;
 
-  ret = pthread_create(&vMain_Controller, NULL, Thread_Main_Controller, &vMain_Controller); 
-
-  if (ret) {
-    printf("Error - Unable to create main conroller thread");
-  }
-
-  // ret = pthread_create(&vThread_MPU6050, NULL, Thread_MPU6050, &vThread_MPU6050); 
+  // ret = pthread_create(&vMain_Controller, NULL, Thread_Main_Controller, &vMain_Controller); 
 
   // if (ret) {
-  //   printf("Error - Unable to create mpu6050 thread");
+  //   printf("Error - Unable to create main conroller thread");
   // }
+
+  ret = pthread_create(&vThread_MPU6050, NULL, Thread_MPU6050, &vThread_MPU6050); 
+
+  if (ret) {
+    printf("Error - Unable to create mpu6050 thread");
+  }
 
   // ret = pthread_create(&vThread_SLAVE_SPI, NULL, Thread_SLAVE_SPI, &vThread_SLAVE_SPI); 
 
@@ -94,9 +94,9 @@ int setup_threads(void) {
   //   printf("Error - Unable to create slave spi thread");
   // } 
 
-  pthread_join(vMain_Controller, NULL);
-  // pthread_join(vThread_MPU6050, NULL);
-  pthread_join(vThread_SLAVE_SPI, NULL);
+  // pthread_join(vMain_Controller, NULL);
+  pthread_join(vThread_MPU6050, NULL);
+  // pthread_join(vThread_SLAVE_SPI, NULL);
 
   return ret;
 }
@@ -120,15 +120,13 @@ int setup_mutexes() {
 
 int main(void) {
 
-   if(setup_mutexes()) {
-    printf("\n Failed to init all mutexes.\n");
-  }
+  // if(setup_mutexes()) {
+  //   printf("\n Failed to init all mutexes.\n");
+  // }
 
   if(setup_threads()) {
     printf("\n Failed to init all threads.\n");
   }
-
- 
 
   exit(EXIT_SUCCESS);
   return 0;

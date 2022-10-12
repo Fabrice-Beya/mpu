@@ -22,6 +22,9 @@
 #include <errno.h>
 #include <pthread.h>
 
+#define true                 1
+#define false                0
+
 // Commands
 #define MOVE                1
 #define SLEEP               2
