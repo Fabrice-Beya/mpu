@@ -24,6 +24,8 @@
 
 #define true                 1
 #define false                0
+#define SUCCESS              0
+#define FAILURE              1
 
 // Commands
 #define MOVE                1
